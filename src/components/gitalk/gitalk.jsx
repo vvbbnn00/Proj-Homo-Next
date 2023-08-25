@@ -1,3 +1,4 @@
+"use client"
 import React, {Component} from 'react'
 import FlipMove from 'react-flip-move'
 import autosize from 'autosize'
@@ -20,7 +21,6 @@ import Comment from './component/comment'
 import Svg from './component/svg'
 import {GT_ACCESS_TOKEN, GT_VERSION, GT_COMMENT} from './const'
 import QLGetComments from './graphql/getComments'
-import {usePathname} from "next/navigation";
 
 class GitalkComponent extends Component {
     state = {
@@ -53,12 +53,12 @@ class GitalkComponent extends Component {
         super(props)
 
         this.options = Object.assign({}, {
-            id: window.location.href,
+            id: 'default',
             number: -1,
             labels: ['Gitalk'],
-            title: window.document.title,
+            title: '',
             body: '',
-            language: window.navigator.language || window.navigator.userLanguage,
+            language: 'en',
             perPage: 10,
             pagerDirection: 'last', // last or first
             createIssueManually: false,
@@ -72,7 +72,7 @@ class GitalkComponent extends Component {
             },
             enableHotKey: true,
 
-            url: window.location.href,
+            url: '',
 
             defaultAuthor: {
                 avatarUrl: '//avatars1.githubusercontent.com/u/29697133?s=50',
@@ -101,10 +101,8 @@ class GitalkComponent extends Component {
                 id: replacedUrl
             }, props.options)
 
-            axiosJSON.post(this.options.proxy, {
+            axiosJSON.post('/api/comments/login', {
                 code,
-                client_id: this.options.clientID,
-                client_secret: this.options.clientSecret
             }).then(res => {
                 if (res.data && res.data.access_token) {
                     this.accessToken = res.data.access_token
@@ -155,7 +153,7 @@ class GitalkComponent extends Component {
     }
 
     get accessToken() {
-        return this._accessToke || window.localStorage.getItem(GT_ACCESS_TOKEN)
+        return this._accessToken || window.localStorage.getItem(GT_ACCESS_TOKEN)
     }
 
     set accessToken(token) {
@@ -763,11 +761,6 @@ class GitalkComponent extends Component {
                             <a className="gt-action gt-action-login"
                                onClick={this.handleLogin}>{this.i18n.t('login-with-github')}</a>
                         }
-                        <div className="gt-copyright">
-                            <a className="gt-link gt-link-project" href="https://github.com/gitalk/gitalk"
-                               target="_blank" rel="noopener noreferrer">Gitalk</a>
-                            <span className="gt-version">{GT_VERSION}</span>
-                        </div>
                     </div>
                 }
                 <div className="gt-user">

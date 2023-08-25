@@ -12,10 +12,10 @@ export default function Nav({t, page}) {
         <div className="navigate-bar">
             <div className="navbar-content">
                 <Link className={"navigate-button" + (page === 'home' ? '-checked' : '')} href={'/' + pathName.split('/')[1] + '/'}>
-                    <text>{t.main}</text>
+                    <span>{t.main}</span>
                 </Link>
                 <Link className={"navigate-button" + (page === 'comment' ? '-checked' : '')} href={'/' + pathName.split('/')[1] + '/comments'}>
-                    <text>{t.comment}</text>
+                    <span>{t.comment}</span>
                 </Link>
             </div>
         </div>)

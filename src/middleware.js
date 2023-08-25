@@ -48,6 +48,7 @@ export function middleware(request) {
 export const config = {
     matcher: [
         // Only run on root (/) URL
-        '/'
+        '/',
+        '/comments'
     ],
 }

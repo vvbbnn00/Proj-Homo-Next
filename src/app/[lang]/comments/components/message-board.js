@@ -2,7 +2,7 @@
 import Gitalk from '@/components/gitalk'
 import {usePathname} from "next/navigation";
 
-export default function MessageBoard() {
+export default function MessageBoard({clientId}) {
     const pathname = usePathname();
     const currentLang = pathname.split('/')[1];
 
@@ -10,7 +10,14 @@ export default function MessageBoard() {
         <>
             <Gitalk
                 options={{
-                    language: currentLang
+                    language: currentLang,
+                    repo: 'Proj-Homo-Next',
+                    owner: 'vvbbnn00',
+                    id: 'Comments',
+                    clientID: clientId,
+                    clientSecret: '',
+                    admin: ['vvbbnn00'],
+                    title: 'Message Board'
                 }}
             />
         </>

@@ -5,7 +5,8 @@ import MessageBoard from "@/app/[lang]/comments/components/message-board";
 
 export default async function Home({params: {lang}}) {
     const dictionary = await getDictionary(lang)
-    const i18n = dictionary?.index ?? {}
+    const i18n = dictionary?.comments ?? {}
+    const ghClientID = process.env.GITALK_CLIENT_ID
 
     return (
         <main className="flex min-h-screen flex-col items-center">
@@ -14,7 +15,15 @@ export default async function Home({params: {lang}}) {
             <div className="content">
                 <LocaleSwitcher/>
                 <div className="card">
-                    <MessageBoard />
+                    <div className="card_head">
+                        <div className="text-small-title">{dictionary?.nav?.comment}</div>
+                    </div>
+                    <div className="pl-5 pr-5 pb-5">
+                        <MessageBoard clientId={ghClientID} />
+                    </div>
+                    <div className="text-sm text-gray-500 text-center">
+                        Comment system is modified from <a href="https://github.com/gitalk/gitalk">Gitalk</a>.
+                    </div>
                 </div>
             </div>
         </main>

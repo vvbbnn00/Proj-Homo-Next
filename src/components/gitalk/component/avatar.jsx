@@ -8,6 +8,7 @@ export default function Avatar({
                                }) {
     return (
         <div className={`gt-avatar ${className}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={src || defaultSrc} alt={`@${alt}`} onError={function (e) {
                 e.target.src = defaultSrc
             }}/>

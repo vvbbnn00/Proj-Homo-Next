@@ -8,5 +8,5 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - data:/app/data
-      - .env.local:/app/.env.local
+      - ./data/:/app/data/
+      - ./.env.local:/app/.env.local:ro

@@ -1,0 +1,16 @@
+.caution {
+    color: #a2a2a2;
+    padding: 10px;
+}
+
+.lang-button {
+    color: #6f6f6f;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.current {
+    cursor: default;
+    text-decoration: none;
+    font-weight: bold;
+}

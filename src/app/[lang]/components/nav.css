@@ -1,0 +1,43 @@
+.navigate-bar {
+    background-color: #d8d8d8;
+    height: 45px;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+}
+
+
+.navbar-content{
+    display: flex;
+    flex-direction: row;
+    max-width: 768px;
+    margin: auto;
+
+}
+
+.navigate-button {
+    padding: 10px;
+    color: #808080;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: all 0.2s;
+}
+
+.navigate-button-checked {
+    padding: 10px;
+    color: #e5e5e5;
+    background-color: #afafaf;
+    margin-right: 5px;
+    transition: all 0.2s;
+}
+
+
+.navigate-button:hover {
+    color: #6c6c6c;
+    background-color: #f3f3f3;
+}
+
+.navigate-button:active {
+    color: #e5e5e5;
+    background-color: #afafaf;
+}

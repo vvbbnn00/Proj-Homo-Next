@@ -1,0 +1,26 @@
+{
+  "index": {
+    "name": "田所（Tadokoro）",
+    "age": "<b>年齡：</b>24歲",
+    "job": "<b>職業：</b>學生（游泳部和空手道部）",
+    "stature": "<b>身高：</b>170cm",
+    "weight": "<b>體重：</b>74kg",
+    "hobbies": "<b>愛好：</b>日光浴、有氧訓練（每週三至四天左右）",
+    "foods": "<b>喜歡的食物：</b>紅茶（要素察覺）、拉麵",
+    "alias": "<b>別稱：</b>野獸先輩、田所浩二",
+    "ui_whoami": "我 是 誰 ？",
+    "ui_whats_this": "這是什麼啊？（迫真）",
+    "pv_title": "你事第[{pv}]個訪問本站的HOMO",
+    "pv_tip": "重繪一下就算一回啊一回！",
+    "avatar": "頭像",
+    "intro": "<p><strong>野獸先輩</strong>是日本㚻片公司COAT CORPORATION（<a href=\"http://www.coat.co.jp/\" title=\"官方網站\">官方網站</a>）2001年發售的電影《Babylon34盛夏之夜的淫夢theIMP》中出演的“田所”一角的一名演員。他出場的影片第四章副標題為“昏睡レイプ!野獣と化した先輩”，囙此得名。其本人雖然成了日本的網路紅人，但是真姓名，身份，和出演之後的行迹均不詳，<del>姓名不詳、性別不明、國籍不明、種族不明。</del></p>\n\t\t\t\t\t<p style=\"text-align: right;\"><a href=\"https://zh.moegirl.org.cn/%E9%87%8E%E5%85%BD%E5%85%88%E8%BE%88%E5%A5%B3%E5%AD%90%E8%AF%B4\"\n\t\t\t\t\t\t title=\"更多閱讀\">> 更多閱讀</a></p>\n\t\t\t\t\t<p><i>\n\t\t\t\t\t\t\t<p>本文引自<a href=\"https://zh.moegirl.org.cn\" title=\"萌娘百科\">萌娘百科</a>，文字內容默認使用《知識共享簽名-非商業性使用-同種方式共享3.0》協定。</p>\n\t\t\t\t\t\t</i></p>",
+    "ui_contact": "联系站长？（压力马斯内！）",
+    "contact": "<p>如果你想要幫忙協助開發網站（喜）、有改進建議或想要糾正錯誤，都可以聯繫站長：</p>\n<p>Email: <a href=\"mailto:vvbbnn00@foxmail.com\">vvbbnn00@foxmail.com</a></p>\n<p><del>或者可以拜訪本社（大噓）：東京都世田谷區北沢3-23-14</del></p>\n<p><br /><b>下麵事感謝人員名單(臭 名 單)：</b></p>\n<ul>- 沒有人，哼哼啊啊啊啊啊啊啊啊（悲）</ul>"
+  },
+  "nav": {
+    "main": "首頁",
+    "black_tea": "來杯紅茶",
+    "comment": "留言板",
+    "about": "關於本站"
+  }
+}

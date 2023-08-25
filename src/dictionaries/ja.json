@@ -1,0 +1,26 @@
+{
+  "index": {
+    "name": "田所(たどころ)",
+    "age": "<b>年齢：</b>24歳",
+    "job": "<b>職業：</b>学生(水泳部と空手部に所属)",
+    "stature": "<b>身長：</b>170cm",
+    "weight": "<b>体重：</b>74kg",
+    "hobbies": "<b>趣味：</b>日光浴、ウエイトトレーニング(週3日か4日くらい)",
+    "foods": "<b>好物：</b>紅茶（要素感知）、ラーメン",
+    "alias": "<b>別名：</b>野獣先輩、田所浩二",
+    "ui_whoami": "あ　れ　は　誰　だ",
+    "ui_whats_this": "これは何ですか？（迫真）",
+    "pv_title": "あなたは[{pv}]回目の当サイトを訪問したHOMOです。",
+    "pv_tip": "サイトを更新すると、PVが増えます。",
+    "avatar": "アバター",
+    "intro": "<p><b>野獣先輩</b>は日本映画会社COAT CORPORATION(<a href=\"http://www.coat.co.jp/\" title=\"公式サイト\">公式サイト</a>)が2001年に発売した映画『Babylon\n\t\t\t\t\t\t34真夏の夜の淫夢theIMP』で「田所」役を演じた俳優。彼が出演した映画の第四章の副題は「昏睡レプチ！野獣と化した先輩」という名前です。本人は日本のネット人気者となりましたが、本名、身分、出演後の行方は不明です。</p>\n\t\t\t\t\t<p style=\"text-align: right;\"><a href=\"https://zh.moegirl.org.cn/%E9%87%8E%E5%85%BD%E5%85%88%E8%BE%88%E5%A5%B3%E5%AD%90%E8%AF%B4\"\n\t\t\t\t\t\t title=\"もっと読む\">> もっと読む</a></p>\n\t\t\t\t\t<p><i>\n\t\t\t\t\t\t\t<p>本文は<a href=\"https://zh.moegirl.org.cn\" title=\"萌え娘百科\">萌え娘百科</a>から引用して、文字の内容はデフォルトで「知識共有署名-非商業的使用-同じ方式で3.0」協議を共有する。</p>\n\t\t\t\t\t\t</i></p>",
+    "ui_contact": "駅長に連絡しますか？（やりますねぇ！）",
+    "contact": "<p>サイトの開発に協力したいならば、あるいは改善の提案があります。あるいは誤りを訂正したいなら、駅長に連絡してください。</p>\n                        <p>Email: <a href=\"mailto:vvbbnn00@foxmail.com\">vvbbnn00@foxmail.com</a></p>\n                        <p><del>あるいは本社を訪問することができます（大嘘）：東京都世田谷区北沢3-23-14</del></p>\n                        <br />\n                        <p><b>お礼のリスト：</b></p>\n                        <ul>誰もいません。ンアッー、アアアアアアアア（悲）</ul>"
+  },
+  "nav": {
+    "main": "最初のページ",
+    "black_tea": "紅茶を一杯いかがですか？",
+    "comment": "伝言板",
+    "about": "について"
+  }
+}

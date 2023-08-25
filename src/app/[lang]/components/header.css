@@ -1,0 +1,117 @@
+@font-face {
+    font-family: 'webfont';
+    font-display: swap;
+    src: url('//at.alicdn.com/t/webfont_bd1g3c0o7xe.eot');
+    /* IE9*/
+    src: url('//at.alicdn.com/t/webfont_bd1g3c0o7xe.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */ url('//at.alicdn.com/t/webfont_bd1g3c0o7xe.woff2') format('woff2'),
+    url('//at.alicdn.com/t/webfont_bd1g3c0o7xe.woff') format('woff'),
+        /* chrome、firefox */ url('//at.alicdn.com/t/webfont_bd1g3c0o7xe.ttf') format('truetype'),
+        /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/webfont_bd1g3c0o7xe.svg#庞门正道标题体2') format('svg');
+    /* iOS 4.1- */
+}
+
+.web-font {
+    font-family: "webfont", serif !important;
+    font-size: 54px;
+    color: rgba(248, 248, 248, 0.8);
+    font-weight: bold;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: #595959 2px 2px;
+}
+
+
+.logo_head:hover {
+    background-image: url('/logo2.png');
+}
+
+.header {
+    width: 100%;
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.header > div {
+    position: absolute;
+    left: 0;
+    width: 110%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    --offset: -1%;
+    --blur: 2px;
+}
+
+.header > div > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition-duration: 1.5s;
+
+    transform: translatex(var(--offset));
+    filter: blur(var(--blur));
+}
+
+.header > div > img:hover {
+    --offset: calc(-1% - 10px);
+    --blur: 0px;
+
+    transform: translatex(var(--offset));
+    filter: blur(0);
+}
+
+
+.header-title {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 160px;
+    pointer-events: none;
+    margin-left: 130px;
+}
+
+.header-title > div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+
+.logo_head-div{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: fit-content;
+    height: 160px;
+}
+
+.logo_head {
+    height: 100px;
+    width: 100px;
+    z-index: 1;
+    background-size: 100px 100px;
+    background-image: url('/logo1.png');
+    cursor: pointer;
+    outline: none;
+    border: none;
+    margin: 20px;
+}
+
+.web-font {
+    user-select: none;
+}

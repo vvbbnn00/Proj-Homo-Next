@@ -5,7 +5,6 @@ import MessageBoard from "@/app/[lang]/comments/components/message-board";
 
 export default async function Home({params: {lang}}) {
     const dictionary = await getDictionary(lang)
-    const i18n = dictionary?.comments ?? {}
     const ghClientID = process.env.GITALK_CLIENT_ID
 
     return (

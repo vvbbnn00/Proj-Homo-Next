@@ -11,6 +11,7 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.4.0",
     "@headlessui/react": "^1.7.17",
+    "@seald-io/nedb": "^4.0.2",
     "autoprefixer": "10.4.15",
     "autosize": "^6.0.1",
     "axios": "^1.4.0",

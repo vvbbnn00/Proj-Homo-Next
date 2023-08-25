@@ -1,15 +1,21 @@
 import './globals.css'
 import Footer from "@/app/[lang]/components/footer";
 import Header from "@/app/[lang]/components/header";
+import {getDictionary} from "@/get-dictionary";
 
-export const metadata = {
-    title: '这么臭的网站有访问的必要吗',
-    description: '田所浩二（野兽先辈）是一位知名日本网络红人，该网站用于介绍野兽先辈的王道征途。',
+export async function generateMetadata({params, searchParams}, parent) {
+    const lang = params.lang
+    const dictionary = await getDictionary(lang)
+    return dictionary.meta
 }
 
 export default function RootLayout({children, params}) {
     return (
         <html lang={params.lang}>
+        <head>
+            <link rel="icon" href="/favicon.ico"/>
+            <link rel="shortcut icon" href="/favicon.ico"/>
+        </head>
         <body>
         <Header/>
         {children}

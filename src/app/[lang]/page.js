@@ -3,19 +3,23 @@ import './main.css'
 import LocaleSwitcher from "@/app/[lang]/components/locale-switcher";
 import {getDictionary} from "@/get-dictionary";
 import Nav from "@/app/[lang]/components/nav";
+import {getPV, updatePV} from "@/utils/data-storage";
 
 
 export default async function Home({params: {lang}}) {
     const dictionary = await getDictionary(lang)
     const i18n = dictionary?.index ?? {}
+    const pvData = await getPV();
+    updatePV();
+    const pv = pvData[0].pv;
 
     return (
         <main className="flex min-h-screen flex-col items-center">
-            <Nav t={dictionary?.nav} page={"home"} />
+            <Nav t={dictionary?.nav} page={"home"}/>
             <div className="content">
                 <div>
                     <center>
-                        <div className="title">{i18n?.pv_title}</div>
+                        <div className="title">{i18n?.pv_title?.replaceAll('{pv}', pv)}</div>
                     </center>
                     <center>
                         <div className="text-small-title">{i18n?.pv_tip}</div>
@@ -41,7 +45,7 @@ export default async function Home({params: {lang}}) {
                         <div className="flex sjustify-center align-center">
                             <div className="text-area">
                                 <div className="title"
-                                      dangerouslySetInnerHTML={{__html: i18n?.name}}/>
+                                     dangerouslySetInnerHTML={{__html: i18n?.name}}/>
                                 <div className="list-text" dangerouslySetInnerHTML={{__html: i18n?.alias}}/>
                                 <div className="list-text" dangerouslySetInnerHTML={{__html: i18n?.age}}/>
                                 <div className="list-text" dangerouslySetInnerHTML={{__html: i18n?.job}}/>

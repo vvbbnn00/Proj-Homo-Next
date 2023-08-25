@@ -1,6 +1,6 @@
 export const i18n = {
     defaultLocale: 'en',
-    locales: ['en', 'zh', 'zh_tw', 'ja'],
+    locales: ['en', 'zh', 'zh-TW', 'ja'],
     localeData: {
         en: {
             name: 'English',
@@ -8,7 +8,7 @@ export const i18n = {
         zh: {
             name: '中文-简体',
         },
-        zh_tw: {
+        'zh-TW': {
             name: '中文-繁體',
         },
         ja: {

@@ -2,6 +2,7 @@
 import "./header.css";
 import {Dialog, Transition} from '@headlessui/react'
 import {useState, Fragment} from 'react'
+import Image from "next/image";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
@@ -82,7 +83,7 @@ export default function Header() {
             <div className="logo_head" onClick={openModal}></div>
         </div>
         <div className="header">
-            <div><img src="/background/back-2.png" alt=""/></div>
+            <div><Image src="/background/back-2.png" alt="" width={1024} height={160}/></div>
         </div>
         <div className="header-title">
             <div

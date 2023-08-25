@@ -21,7 +21,7 @@ export async function POST(request) {
             client_secret: process.env.GITALK_CLIENT_SECRET,
             code
         }),
-        cache: 'no-cache'
+        cache: 'no-store'
     })
 
     return NextResponse.json(await result.json())

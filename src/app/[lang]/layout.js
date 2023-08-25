@@ -11,16 +11,16 @@ export async function generateMetadata({params, searchParams}, parent) {
 
 export default function RootLayout({children, params}) {
     return (
-        <html lang={params.lang}>
-        <head>
-            <link rel="icon" href="/favicon.ico"/>
-            <link rel="shortcut icon" href="/favicon.ico"/>
-        </head>
-        <body>
-        <Header/>
-        {children}
-        <Footer/>
-        </body>
+        <html>
+            <head>
+                <link rel="icon" href="/favicon.ico"/>
+                <link rel="shortcut icon" href="/favicon.ico"/>
+            </head>
+            <body>
+            <Header/>
+            {children}
+            <Footer/>
+            </body>
         </html>
     )
 }

@@ -1,0 +1,16 @@
+.text-area {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.logo {
+    border-radius: 2px;
+    box-shadow: 0 0 10px #bab9bd;
+    margin: 10px;
+}

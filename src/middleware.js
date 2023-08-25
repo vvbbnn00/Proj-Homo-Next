@@ -8,14 +8,13 @@ const DEFAULT_LOCALE = i18n.defaultLocale;
 
 // Get the preferred locale, similar to above or using a library
 function getLocale(request) {
-    let languages = new Negotiator({headers: request.headers}).languages()
-
-    languages = languages.map((language) => {
-        if (language === '*') {
-            return DEFAULT_LOCALE
+    let languages = new Negotiator({
+        headers: {
+            'accept-language': request.headers.get('Accept-Language')
         }
-        return language
-    })
+    }).languages();
+
+    languages = languages.filter((x) => LOCALES.includes(x))
 
     const defaultLocale = DEFAULT_LOCALE
 

@@ -3,14 +3,13 @@ import './main.css'
 import LocaleSwitcher from "@/app/[lang]/components/locale-switcher";
 import {getDictionary} from "@/get-dictionary";
 import Nav from "@/app/[lang]/components/nav";
-import {getPV, updatePV} from "@/utils/data-storage";
+import {getPV} from "@/utils/data-storage";
 
 
 export default async function Home({params: {lang}}) {
     const dictionary = await getDictionary(lang)
     const i18n = dictionary?.index ?? {}
     const pvData = await getPV();
-    updatePV();
     const pv = pvData[0].pv;
 
     return (
@@ -31,7 +30,7 @@ export default async function Home({params: {lang}}) {
                         <div className="text-small-title">{i18n?.ui_whoami}</div>
                     </div>
                     <div className="card_area flex flex-row align-middle justify-around flex-wrap">
-                        <div className="flex justify-center align-center">
+                        <div className="flex justify-center align-center items-center md:w-3/12">
                             <div className="avatar">
                                 <Image
                                     src="/avatar.jpg"
@@ -42,7 +41,7 @@ export default async function Home({params: {lang}}) {
                                 />
                             </div>
                         </div>
-                        <div className="flex sjustify-center align-center">
+                        <div className="flex sjustify-center align-center md:w-7/12">
                             <div className="text-area">
                                 <div className="title"
                                      dangerouslySetInnerHTML={{__html: i18n?.name}}/>

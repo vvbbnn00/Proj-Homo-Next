@@ -36,11 +36,7 @@ export default function LocaleSwitcher() {
                 })}
             </div>
             {!currentLocale.startsWith("zh") && <div className="caution">
-                <b>Caution：</b>due
-                to my
-                weak language skills, some Japanese and English texts are translated by machine. If there are
-                any mistakes, please
-                contact me. THANK YOU.
+                <b>Caution: </b>Due to limitations in my language proficiency, certain Japanese and English texts have been translated using AI. Should you identify any errors, please kindly reach out to me via email. Thank you
             </div>}
         </div>
     )

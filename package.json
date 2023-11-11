@@ -14,7 +14,7 @@
     "@seald-io/nedb": "^4.0.2",
     "autoprefixer": "10.4.15",
     "autosize": "^6.0.1",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "date-fns": "^2.30.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",

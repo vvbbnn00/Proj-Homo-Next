@@ -1,14 +1,20 @@
 "use client"
 import Gitalk from '@/components/gitalk'
 import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
 
 export default function MessageBoard({clientId}) {
     const pathname = usePathname();
     const currentLang = pathname.split('/')[1];
+    const [render, setRender] = useState(false);
+
+    useEffect(() => {
+        setRender(true);
+    }, []);
 
     return (
         <>
-            <Gitalk
+            {render && <Gitalk
                 options={{
                     language: currentLang,
                     repo: 'Proj-Homo-Next',
@@ -19,7 +25,7 @@ export default function MessageBoard({clientId}) {
                     admin: ['vvbbnn00'],
                     title: 'Message Board'
                 }}
-            />
+            />}
         </>
     )
 }

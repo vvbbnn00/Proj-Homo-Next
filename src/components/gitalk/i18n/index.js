@@ -35,17 +35,18 @@ class I18N {
 
     t(key, params) {
         let str = this.langMap[key] || key
+        if (!str) return key
         if (params) {
             for (const k in params) {
                 if (k.startsWith('smart_')) {
                     if (!isNaN(Number(params[k])) && Number(params[k]) <= 1) {
-                        str = str.split('||||')[0]
+                        str = str?.split('||||')[0]
                     } else {
-                        str = str.split('||||')[1]
+                        str = str?.split('||||')[1]
                     }
                 }
-                str = str.replaceAll(`%{${k}}`, params[k])
-                str = str.trim()
+                str = str?.replaceAll(`%{${k}}`, params[k])
+                str = str?.trim()
             }
         }
         return str

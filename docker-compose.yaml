@@ -1,9 +1,10 @@
 services:
   app:
+    container_name: project-homo-nextjs
     build: .
     restart: always
     ports:
-      - "3000:3000"
+      - "21003:3000"
     volumes:
       - ./data/:/app/data/
       - ./.env.local:/app/.env.local:ro

@@ -3,7 +3,8 @@ import {getDictionary} from "@/get-dictionary";
 import Nav from "@/app/[lang]/components/nav";
 import MessageBoard from "@/app/[lang]/comments/components/message-board";
 
-export default async function Home({params: {lang}}) {
+export default async function Home({params}) {
+    const {lang} = await params
     const dictionary = await getDictionary(lang)
     const ghClientID = process.env.GITALK_CLIENT_ID
 

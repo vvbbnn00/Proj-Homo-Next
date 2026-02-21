@@ -1,9 +1,17 @@
 const Datastore = require('@seald-io/nedb');
-const db = new Datastore({filename: 'data/data.db', autoload: true});
+let db = null
+
+function getDB() {
+    if (!db) {
+        db = new Datastore({filename: 'data/data.db', autoload: true})
+    }
+    return db
+}
 
 export async function getPV() {
+    const currentDB = getDB()
     return new Promise((resolve, reject) => {
-        db.find({
+        currentDB.find({
             name: "pv"
         }, (err, docs) => {
             if (err) {
@@ -11,7 +19,7 @@ export async function getPV() {
             } else {
                 // if not found, create one
                 if (docs.length === 0) {
-                    db.insert({
+                    currentDB.insert({
                         name: "pv",
                         pv: 0
                     }, (err, newDoc) => {
@@ -29,15 +37,16 @@ export async function getPV() {
 }
 
 export async function updatePV() {
+    const currentDB = getDB()
     // add py by 1
     return new Promise((resolve, reject) => {
-        db.update({
+        currentDB.update({
             name: "pv"
         }, {
             $inc: {
                 pv: 1
             }
-        }, {}, (err, numReplaced) => {
+        }, {upsert: true}, (err, numReplaced) => {
             if (err) {
                 reject(err)
             } else {

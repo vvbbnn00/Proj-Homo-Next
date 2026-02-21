@@ -6,11 +6,13 @@ import Nav from "@/app/[lang]/components/nav";
 import {getPV} from "@/utils/data-storage";
 
 
-export default async function Home({params: {lang}}) {
+export default async function Home({params}) {
+    const {lang} = await params
     const dictionary = await getDictionary(lang)
     const i18n = dictionary?.index ?? {}
-    const pvData = await getPV();
-    const pv = pvData[0].pv;
+    const isBuildTime = process.env.npm_lifecycle_event === 'build' || process.env.NEXT_PHASE === 'phase-production-build'
+    const pvData = isBuildTime ? [{pv: 0}] : await getPV()
+    const pv = pvData?.[0]?.pv ?? 0
 
     return (
         <main className="flex min-h-screen flex-col items-center">

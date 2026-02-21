@@ -1,6 +1,5 @@
 "use client"
 import React, {Component} from 'react'
-import FlipMove from 'react-flip-move'
 import autosize from 'autosize'
 
 import i18n from './i18n'
@@ -48,6 +47,7 @@ class GitalkComponent extends Component {
         isOccurError: false,
         errorMsg: '',
     }
+    _isMounted = false
 
     constructor(props) {
         super(props)
@@ -64,12 +64,6 @@ class GitalkComponent extends Component {
             createIssueManually: false,
             distractionFreeMode: false,
             proxy: 'https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token',
-            flipMoveOptions: {
-                staggerDelayBy: 150,
-                appearAnimation: 'accordionVertical',
-                enterAnimation: 'accordionVertical',
-                leaveAnimation: 'accordionVertical',
-            },
             enableHotKey: true,
 
             url: '',
@@ -90,6 +84,25 @@ class GitalkComponent extends Component {
             window.localStorage.removeItem(GT_COMMENT)
         }
 
+        this.i18n = i18n(this.options.language)
+    }
+
+    componentDidMount() {
+        this._isMounted = true
+        this.bootstrap()
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+
+    safeSetState = (nextState, callback) => {
+        if (this._isMounted) {
+            this.setState(nextState, callback)
+        }
+    }
+
+    bootstrap() {
         const query = queryParse()
         if (query.code) {
             const code = query.code
@@ -99,7 +112,7 @@ class GitalkComponent extends Component {
             this.options = Object.assign({}, this.options, {
                 url: replacedUrl,
                 id: replacedUrl
-            }, props.options)
+            }, this.props.options)
 
             axiosJSON.post('/api/comments/login', {
                 code,
@@ -108,10 +121,10 @@ class GitalkComponent extends Component {
                     this.accessToken = res.data.access_token
 
                     this.getInit()
-                        .then(() => this.setState({isIniting: false}))
+                        .then(() => this.safeSetState({isIniting: false}))
                         .catch(err => {
                             console.log('err:', err)
-                            this.setState({
+                            this.safeSetState({
                                 isIniting: false,
                                 isOccurError: true,
                                 errorMsg: formatErrorMsg(err)
@@ -120,32 +133,32 @@ class GitalkComponent extends Component {
                 } else {
                     // no access_token
                     console.log('res.data err:', res.data)
-                    this.setState({
+                    this.safeSetState({
+                        isIniting: false,
                         isOccurError: true,
                         errorMsg: formatErrorMsg(new Error('no access token'))
                     })
                 }
             }).catch(err => {
                 console.log('err: ', err)
-                this.setState({
+                this.safeSetState({
+                    isIniting: false,
                     isOccurError: true,
                     errorMsg: formatErrorMsg(err)
                 })
             })
         } else {
             this.getInit()
-                .then(() => this.setState({isIniting: false}))
+                .then(() => this.safeSetState({isIniting: false}))
                 .catch(err => {
                     console.log('err:', err)
-                    this.setState({
+                    this.safeSetState({
                         isIniting: false,
                         isOccurError: true,
                         errorMsg: formatErrorMsg(err)
                     })
                 })
         }
-
-        this.i18n = i18n(this.options.language)
     }
 
     componentDidUpdate() {
@@ -194,7 +207,7 @@ class GitalkComponent extends Component {
                 Authorization: `token ${this.accessToken}`
             }
         }).then(res => {
-            this.setState({user: res.data})
+            this.safeSetState({user: res.data})
         }).catch(err => {
             this.logout()
         })
@@ -365,7 +378,9 @@ class GitalkComponent extends Component {
     }
 
     logout() {
-        this.setState({user: null})
+        if (this._isMounted) {
+            this.setState({user: null})
+        }
         window.localStorage.removeItem(GT_ACCESS_TOKEN)
     }
 
@@ -693,27 +708,25 @@ class GitalkComponent extends Component {
 
     comments() {
         const {user, comments, isLoadOver, isLoadMore, pagerDirection} = this.state
-        const {language, flipMoveOptions, admin} = this.options
+        const {language, admin} = this.options
         const totalComments = comments.concat([])
         if (pagerDirection === 'last' && this.accessToken) {
             totalComments.reverse()
         }
         return (
             <div className="gt-comments" key="comments">
-                <FlipMove {...flipMoveOptions}>
-                    {totalComments.map(c => (
-                        <Comment
-                            comment={c}
-                            key={c.id}
-                            user={user}
-                            language={language}
-                            commentedText={this.i18n.t('commented')}
-                            admin={admin}
-                            replyCallback={this.reply(c)}
-                            likeCallback={c.reactions && c.reactions.viewerHasReacted ? this.unLike.bind(this, c) : this.like.bind(this, c)}
-                        />
-                    ))}
-                </FlipMove>
+                {totalComments.map(c => (
+                    <Comment
+                        comment={c}
+                        key={c.id}
+                        user={user}
+                        language={language}
+                        commentedText={this.i18n.t('commented')}
+                        admin={admin}
+                        replyCallback={this.reply(c)}
+                        likeCallback={c.reactions && c.reactions.viewerHasReacted ? this.unLike.bind(this, c) : this.like.bind(this, c)}
+                    />
+                ))}
                 {!totalComments.length && <p className="gt-comments-null">{this.i18n.t('first-comment-person')}</p>}
                 {(!isLoadOver && totalComments.length) ? <div className="gt-comments-controls">
                     <Button className="gt-btn-loadmore" onClick={this.handleCommentLoad} isLoading={isLoadMore}

@@ -3,13 +3,13 @@ import Footer from "@/app/[lang]/components/footer";
 import Header from "@/app/[lang]/components/header";
 import {getDictionary} from "@/get-dictionary";
 
-export async function generateMetadata({params, searchParams}, parent) {
-    const lang = params.lang
+export async function generateMetadata({params}) {
+    const {lang} = await params
     const dictionary = await getDictionary(lang)
     return dictionary.meta
 }
 
-export default function RootLayout({children, params}) {
+export default function RootLayout({children}) {
     return (
         <html>
             <head>

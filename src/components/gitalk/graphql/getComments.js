@@ -114,11 +114,13 @@ function getComments (issue) {
     }
 
     const isLoadOver = data.pageInfo.hasPreviousPage === false || data.pageInfo.hasNextPage === false
-    this.setState({
+    const nextState = {
       comments: cs,
       isLoadOver,
       cursor: data.pageInfo.startCursor || data.pageInfo.endCursor
-    })
+    }
+
+    this.safeSetState(nextState, () => this.persistCache(nextState))
     return cs
   })
 }

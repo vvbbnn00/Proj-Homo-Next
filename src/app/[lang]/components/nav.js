@@ -7,16 +7,31 @@ import {i18n} from "@/i18n-config";
 
 export default function Nav({t, page}) {
     const pathName = usePathname();
+    const currentLocale = pathName?.split('/')[1] || i18n.defaultLocale;
+    const homeHref = `/${currentLocale}/`;
+    const commentsHref = `/${currentLocale}/comments`;
 
     return (
         <div className="navigate-bar">
             <div className="navbar-content">
-                <Link className={"navigate-button" + (page === 'home' ? '-checked' : '')} href={'/' + pathName.split('/')[1] + '/'}>
-                    <span>{t.main}</span>
-                </Link>
-                <Link className={"navigate-button" + (page === 'comment' ? '-checked' : '')} href={'/' + pathName.split('/')[1] + '/comments'}>
-                    <span>{t.comment}</span>
-                </Link>
+                {page === 'home' ? (
+                    <span className="navigate-button-checked">
+                        <span>{t.main}</span>
+                    </span>
+                ) : (
+                    <Link className="navigate-button" href={homeHref}>
+                        <span>{t.main}</span>
+                    </Link>
+                )}
+                {page === 'comment' ? (
+                    <span className="navigate-button-checked">
+                        <span>{t.comment}</span>
+                    </span>
+                ) : (
+                    <Link className="navigate-button" href={commentsHref}>
+                        <span>{t.comment}</span>
+                    </Link>
+                )}
             </div>
         </div>)
 }

@@ -18,7 +18,8 @@ import Button from './component/button'
 import Action from './component/action'
 import Comment from './component/comment'
 import Svg from './component/svg'
-import {GT_ACCESS_TOKEN, GT_VERSION, GT_COMMENT} from './const'
+import {GT_ACCESS_TOKEN, GT_VERSION, GT_COMMENT, GT_OAUTH_STATE} from './const'
+import {getCacheKey, isCacheFresh, readCache, writeCache} from './cache'
 import QLGetComments from './graphql/getComments'
 
 class GitalkComponent extends Component {
@@ -78,10 +79,12 @@ class GitalkComponent extends Component {
         }, props.options)
 
         this.state.pagerDirection = this.options.pagerDirection
-        const storedComment = window.localStorage.getItem(GT_COMMENT)
-        if (storedComment) {
-            this.state.comment = decodeURIComponent(storedComment)
-            window.localStorage.removeItem(GT_COMMENT)
+        if (typeof window !== 'undefined') {
+            const storedComment = window.localStorage.getItem(GT_COMMENT)
+            if (storedComment) {
+                this.state.comment = decodeURIComponent(storedComment)
+                window.localStorage.removeItem(GT_COMMENT)
+            }
         }
 
         this.i18n = i18n(this.options.language)
@@ -89,7 +92,17 @@ class GitalkComponent extends Component {
 
     componentDidMount() {
         this._isMounted = true
-        this.bootstrap()
+        const cached = this.restoreCache()
+
+        if (cached?.isFresh) {
+            if (this.accessToken && !cached.user) {
+                this.getUserInfo().catch(() => {
+                })
+            }
+            return
+        }
+
+        this.bootstrap({showLoading: !cached})
     }
 
     componentWillUnmount() {
@@ -102,17 +115,104 @@ class GitalkComponent extends Component {
         }
     }
 
-    bootstrap() {
+    get cacheKey() {
+        return getCacheKey({
+            owner: this.options.owner,
+            repo: this.options.repo,
+            id: this.options.id,
+            number: this.options.number,
+            accessToken: this.accessToken
+        })
+    }
+
+    persistCache = (nextState = {}) => {
+        writeCache(this.cacheKey, {
+            issue: nextState.issue ?? this.state.issue,
+            comments: nextState.comments ?? this.state.comments,
+            localComments: nextState.localComments ?? this.state.localComments,
+            page: nextState.page ?? this.state.page,
+            cursor: Object.prototype.hasOwnProperty.call(nextState, 'cursor')
+                ? nextState.cursor
+                : this.state.cursor,
+            isLoadOver: nextState.isLoadOver ?? this.state.isLoadOver,
+            isNoInit: nextState.isNoInit ?? this.state.isNoInit,
+            user: Object.prototype.hasOwnProperty.call(nextState, 'user')
+                ? nextState.user
+                : this.state.user
+        })
+    }
+
+    restoreCache = () => {
+        const cached = readCache(this.cacheKey)
+
+        if (!cached) {
+            return null
+        }
+
+        this.safeSetState({
+            issue: cached.issue || null,
+            comments: cached.comments || [],
+            localComments: cached.localComments || [],
+            page: cached.page || 1,
+            cursor: Object.prototype.hasOwnProperty.call(cached, 'cursor') ? cached.cursor : null,
+            isLoadOver: cached.isLoadOver || false,
+            isNoInit: cached.isNoInit || false,
+            user: cached.user || null,
+            isIniting: false,
+            isOccurError: false,
+            errorMsg: '',
+        })
+
+        return {
+            ...cached,
+            isFresh: isCacheFresh(cached)
+        }
+    }
+
+    ensureLoginState() {
+        const storedState = window.sessionStorage.getItem(GT_OAUTH_STATE)
+        if (storedState) {
+            return storedState
+        }
+
+        const bytes = new Uint32Array(4)
+        window.crypto.getRandomValues(bytes)
+        const nextState = Array.from(bytes, value => value.toString(16)).join('')
+
+        window.sessionStorage.setItem(GT_OAUTH_STATE, nextState)
+        return nextState
+    }
+
+    bootstrap({showLoading = true} = {}) {
+        if (showLoading) {
+            this.safeSetState({isIniting: true})
+        }
+
         const query = queryParse()
         if (query.code) {
             const code = query.code
+            const state = query.state
+            const expectedState = window.sessionStorage.getItem(GT_OAUTH_STATE)
             delete query.code
+            delete query.state
             const replacedUrl = `${window.location.origin}${window.location.pathname}?${queryStringify(query)}${window.location.hash}`
             history.replaceState(null, null, replacedUrl)
             this.options = Object.assign({}, this.options, {
                 url: replacedUrl,
                 id: replacedUrl
             }, this.props.options)
+
+            if (!expectedState || state !== expectedState) {
+                window.sessionStorage.removeItem(GT_OAUTH_STATE)
+                this.safeSetState({
+                    isIniting: false,
+                    isOccurError: true,
+                    errorMsg: 'Error: invalid OAuth state'
+                })
+                return
+            }
+
+            window.sessionStorage.removeItem(GT_OAUTH_STATE)
 
             axiosJSON.post('/api/comments/login', {
                 code,
@@ -166,11 +266,17 @@ class GitalkComponent extends Component {
     }
 
     get accessToken() {
+        if (typeof window === 'undefined') {
+            return this._accessToken
+        }
+
         return this._accessToken || window.localStorage.getItem(GT_ACCESS_TOKEN)
     }
 
     set accessToken(token) {
-        window.localStorage.setItem(GT_ACCESS_TOKEN, token)
+        if (typeof window !== 'undefined') {
+            window.localStorage.setItem(GT_ACCESS_TOKEN, token)
+        }
         this._accessToken = token
     }
 
@@ -180,7 +286,8 @@ class GitalkComponent extends Component {
         const query = {
             client_id: clientID,
             redirect_uri: 'https://xn--4kq239b58hryh.xn--6qq986b3xl/en/comments',
-            scope: 'public_repo'
+            scope: 'public_repo',
+            state: this.ensureLoginState()
         }
         return `${githubOauthUrl}?${queryStringify(query)}`
     }
@@ -207,7 +314,7 @@ class GitalkComponent extends Component {
                 Authorization: `token ${this.accessToken}`
             }
         }).then(res => {
-            this.safeSetState({user: res.data})
+            this.safeSetState({user: res.data}, () => this.persistCache({user: res.data}))
         }).catch(err => {
             this.logout()
         })
@@ -233,7 +340,7 @@ class GitalkComponent extends Component {
                     if (res && res.data && res.data.number === number) {
                         issue = res.data
 
-                        this.setState({issue, isNoInit: false})
+                        this.safeSetState({issue, isNoInit: false}, () => this.persistCache({issue, isNoInit: false}))
                     }
                     resolve(issue)
                 })
@@ -270,7 +377,7 @@ class GitalkComponent extends Component {
             } else {
                 issue = res.data[0]
             }
-            this.setState({issue, isNoInit})
+            this.safeSetState({issue, isNoInit}, () => this.persistCache({issue, isNoInit}))
             return issue
         })
     }
@@ -279,7 +386,7 @@ class GitalkComponent extends Component {
         const {number} = this.options
         const {issue} = this.state
         if (issue) {
-            this.setState({isNoInit: false})
+            this.safeSetState({isNoInit: false}, () => this.persistCache({isNoInit: false}))
             return Promise.resolve(issue)
         }
 
@@ -306,7 +413,7 @@ class GitalkComponent extends Component {
                 Authorization: `token ${this.accessToken}`
             }
         }).then(res => {
-            this.setState({issue: res.data})
+            this.safeSetState({issue: res.data}, () => this.persistCache({issue: res.data}))
             return res.data
         })
     }
@@ -316,11 +423,12 @@ class GitalkComponent extends Component {
         const {clientID, clientSecret, perPage} = this.options
         const {page} = this.state
 
-        return this.getIssue()
-            .then(issue => {
-                if (!issue) return
+        return Promise.resolve(issue || this.state.issue || null)
+            .then(currentIssue => currentIssue || this.getIssue())
+            .then(currentIssue => {
+                if (!currentIssue) return
 
-                return axiosGithub.get(issue.comments_url, {
+                return axiosGithub.get(currentIssue.comments_url, {
                     headers: {
                         Accept: 'application/vnd.github.v3.full+json'
                     },
@@ -333,17 +441,18 @@ class GitalkComponent extends Component {
                         page
                     }
                 }).then(res => {
-                    const {comments, issue} = this.state
+                    const {comments} = this.state
                     let isLoadOver = false
                     const cs = comments.concat(res.data)
-                    if (cs.length >= issue.comments || res.data.length < perPage) {
+                    if (cs.length >= currentIssue.comments || res.data.length < perPage) {
                         isLoadOver = true
                     }
-                    this.setState({
+                    const nextState = {
                         comments: cs,
                         isLoadOver,
                         page: page + 1
-                    })
+                    }
+                    this.safeSetState(nextState, () => this.persistCache(nextState))
                     return cs
                 })
             })
@@ -369,17 +478,19 @@ class GitalkComponent extends Component {
                 }
             }))
             .then(res => {
-                this.setState({
+                const nextState = {
                     comment: '',
                     comments: comments.concat(res.data),
                     localComments: localComments.concat(res.data)
-                })
+                }
+
+                this.safeSetState(nextState, () => this.persistCache(nextState))
             })
     }
 
     logout() {
         if (this._isMounted) {
-            this.setState({user: null})
+            this.setState({user: null}, () => this.persistCache({user: null}))
         }
         window.localStorage.removeItem(GT_ACCESS_TOKEN)
     }
@@ -433,9 +544,7 @@ class GitalkComponent extends Component {
                 return c
             })
 
-            this.setState({
-                comments
-            })
+            this.safeSetState({comments}, () => this.persistCache({comments}))
         })
     }
 
@@ -492,9 +601,7 @@ class GitalkComponent extends Component {
                     return c
                 })
 
-                this.setState({
-                    comments
-                })
+                this.safeSetState({comments}, () => this.persistCache({comments}))
             }
         })
     }
@@ -570,11 +677,13 @@ class GitalkComponent extends Component {
         })
     }
     handleCommentPreview = e => {
+        const nextIsPreview = !this.state.isPreview
+
         this.setState({
-            isPreview: !this.state.isPreview
+            isPreview: nextIsPreview
         })
-        if (!this.state.isPreview) {
-            return;
+        if (!nextIsPreview) {
+            return
         }
         axiosGithub.post('/markdown', {
             text: this.state.comment

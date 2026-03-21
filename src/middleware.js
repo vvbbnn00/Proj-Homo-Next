@@ -14,8 +14,6 @@ function getLocale(request) {
         }
     }).languages();
 
-    languages = languages.filter((x) => LOCALES.includes(x))
-
     const defaultLocale = DEFAULT_LOCALE
 
     let language;
@@ -25,7 +23,7 @@ function getLocale(request) {
         language = defaultLocale
     }
 
-    return languages ? language : defaultLocale
+    return languages.length ? language : defaultLocale
 }
 
 export function middleware(request) {
@@ -38,16 +36,15 @@ export function middleware(request) {
     // Redirect if there is no locale
     if (pathnameIsMissingLocale) {
         const locale = getLocale(request)
+        const normalizedPathname = pathname === '/' ? '' : pathname
         return NextResponse.redirect(
-            new URL(`/${locale}/${pathname}`, request.url)
+            new URL(`/${locale}${normalizedPathname}`, request.url)
         )
     }
 }
 
 export const config = {
     matcher: [
-        // Only run on root (/) URL
-        '/',
-        '/comments'
+        '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)'
     ],
 }

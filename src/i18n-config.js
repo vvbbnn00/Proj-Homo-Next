@@ -6,13 +6,13 @@ export const i18n = {
             name: 'English',
         },
         zh: {
-            name: '中文-简体',
+            name: '\u4e2d\u6587\uff08\u7b80\u4f53\uff09',
         },
         'zh-TW': {
-            name: '中文-繁體',
+            name: '\u4e2d\u6587\uff08\u7e41\u9ad4\uff09',
         },
         ja: {
-            name: '日本語',
+            name: '\u65e5\u672c\u8a9e',
         }
     }
 }

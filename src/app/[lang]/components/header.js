@@ -83,7 +83,17 @@ export default function Header() {
             <div className="logo_head" onClick={openModal}></div>
         </div>
         <div className="header">
-            <div><Image src="/background/back-2.png" alt="" width={1024} height={160}/></div>
+            <div>
+                <Image
+                    src="/background/back-2.png"
+                    alt=""
+                    width={1024}
+                    height={160}
+                    priority
+                    sizes="100vw"
+                    style={{width: '100%', height: 'auto'}}
+                />
+            </div>
         </div>
         <div className="header-title">
             <div

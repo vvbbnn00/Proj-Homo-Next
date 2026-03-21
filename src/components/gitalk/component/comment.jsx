@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Avatar from './avatar'
 import Svg from './svg'
 import { formatDistanceToNow, parseISO } from 'date-fns'
-import { es, ru, fr, zhCN, zhTW, ko, pl, de } from 'date-fns/locale'
+import { es, ru, fr, zhCN, zhTW, ko, pl, de, ja } from 'date-fns/locale'
 import 'github-markdown-css/github-markdown.css'
 
 if (typeof window !== `undefined`) {
@@ -15,7 +15,8 @@ if (typeof window !== `undefined`) {
     ru: ru,
     pl: pl,
     ko: ko,
-    de: de
+    de: de,
+    ja: ja
   }
 }
 

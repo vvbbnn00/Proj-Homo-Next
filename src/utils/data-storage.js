@@ -1,9 +1,13 @@
 const Datastore = require('@seald-io/nedb');
+const path = require('path');
 let db = null
 
 function getDB() {
     if (!db) {
-        db = new Datastore({filename: 'data/data.db', autoload: true})
+        db = new Datastore({
+            filename: path.join(process.cwd(), 'data', 'data.db'),
+            autoload: true
+        })
     }
     return db
 }
@@ -26,9 +30,10 @@ export async function getPV() {
                         if (err) {
                             reject(err)
                         } else {
-                            resolve(newDoc)
+                            resolve([newDoc])
                         }
                     })
+                    return
                 }
                 resolve(docs)
             }
@@ -38,7 +43,7 @@ export async function getPV() {
 
 export async function updatePV() {
     const currentDB = getDB()
-    // add py by 1
+    // Add pv by 1.
     return new Promise((resolve, reject) => {
         currentDB.update({
             name: "pv"

@@ -21,7 +21,7 @@
     "negotiator": "^0.6.3",
     "next": "15.5.14",
     "nib": "^1.2.0",
-    "postcss": "8.4.31",
+    "postcss": "8.5.10",
     "raw-loader": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

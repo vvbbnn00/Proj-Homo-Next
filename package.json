@@ -14,14 +14,14 @@
     "@seald-io/nedb": "^4.0.2",
     "autoprefixer": "10.4.15",
     "autosize": "^6.0.1",
-    "axios": "^1.13.5",
+    "axios": "^1.16.1",
     "date-fns": "^2.30.0",
     "eslint-config-next": "16.1.6",
     "github-markdown-css": "^5.2.0",
     "negotiator": "^0.6.3",
-    "next": "15.5.14",
+    "next": "15.5.18",
     "nib": "^1.2.0",
-    "postcss": "8.4.31",
+    "postcss": "^8.5.15",
     "raw-loader": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -30,5 +30,10 @@
   },
   "devDependencies": {
     "eslint": "^9.39.0"
+  },
+  "overrides": {
+    "next@15.5.18": {
+      "postcss": "8.5.15"
+    }
   }
 }

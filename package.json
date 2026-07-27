@@ -19,7 +19,7 @@
     "eslint-config-next": "16.1.6",
     "github-markdown-css": "^5.2.0",
     "negotiator": "^0.6.3",
-    "next": "15.5.18",
+    "next": "15.5.21",
     "nib": "^1.2.0",
     "postcss": "^8.5.15",
     "raw-loader": "^4.0.2",
